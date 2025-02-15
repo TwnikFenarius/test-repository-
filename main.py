@@ -31,12 +31,33 @@ def add_note():
     else:
         print("Нельзя сохранить пустую заметку.")
 
+
+def delete_note():
+    """Удаляет заметку по номеру"""
+    show_notes()
+    try:
+        note_number = int(input("\nВведите номер заметки для удаления: ")) - 1
+        with open(NOTES_FILE, "r", encoding="utf-8") as file:
+            notes = file.readlines()
+
+        if 0 <= note_number < len(notes):
+            del notes[note_number]
+            with open(NOTES_FILE, "w", encoding="utf-8") as file:
+                file.writelines(notes)
+            print("Заметка удалена.")
+        else:
+            print("Ошибка: неверный номер заметки.")
+    except ValueError:
+        print("Ошибка: введите число.")
+
+
 def main():
     """Основное меню"""
     while True:
         print("\n1. Показать заметки")
         print("2. Добавить заметку")
-        print("3. Выйти")
+        print("3. Удалить заметку")  # Новый пункт меню
+        print("4. Выйти")
         choice = input("Выберите действие: ").strip()
 
         if choice == "1":
@@ -44,10 +65,13 @@ def main():
         elif choice == "2":
             add_note()
         elif choice == "3":
+            delete_note()
+        elif choice == "4":
             print("Выход.")
             break
         else:
             print("Ошибка: выберите правильный номер.")
+
 
 if __name__ == "__main__":
     main()
