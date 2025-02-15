@@ -6,24 +6,26 @@ import os  # Добавим os для проверки существовани�
 
 
 def show_notes():
-    """Выводит все заметки"""
-    try:
-        with open(FILE_NAME, "r", encoding="utf-8") as file:
-            notes = file.readlines()
-            if notes:
-                print("\nВаши заметки:")
-                for note in notes:
-                    print(f"- {note.strip()}")
-            else:
-                print("\nЗаметок пока нет.")
-    except FileNotFoundError:
+    """Выводит все заметки с нумерацией"""
+    if not os.path.exists(NOTES_FILE):
         print("\nФайл с заметками отсутствует. Добавьте первую заметку.")
+        return
+
+    with open(NOTES_FILE, "r", encoding="utf-8") as file:
+        notes = file.readlines()
+        if notes:
+            print("\nВаши заметки:")
+            for idx, note in enumerate(notes, 1):  # Добавили нумерацию заметок
+                print(f"{idx}. {note.strip()}")
+        else:
+            print("\nЗаметок пока нет.")
+
 
 def add_note():
     """Добавляет новую заметку"""
     note = input("Введите заметку: ").strip()
     if note:
-        with open(FILE_NAME, "a", encoding="utf-8") as file:
+        with open(NOTES_FILE, "a", encoding="utf-8") as file:
             file.write(note + "\n")
         print("Заметка сохранена!")
     else:
